@@ -7,7 +7,13 @@ import os
 # ==========================================
 tokens = [
     # --- EIMMY OCHOA --- #
-    
+    'VARIABLE', 'ENTERO', 'BOOLEANO', 'CADENA',
+    'ASIGNACION', 'IGUALDAD', 'SUMA',
+    'IF', 'ELSE', 'ECHO', 'FUNCTION', 'RETURN',
+    'LLAVE_IZQ', 'LLAVE_DER', 'PAR_IZQ', 'PAR_DER',
+    'COR_IZQ', 'COR_DER', 'PUNTO_COMA', 'COMA',
+    'ID'
+
     # --- DIEGO PARRALES --- #
     
     # --- JULIANA BURGOS --- #
@@ -18,15 +24,70 @@ tokens = [
 # 2. EXPRESIONES REGULARES 
 # ==========================================
 
-# --- APORTE EIMMY OCHOA --- #
+# --- INICIO APORTE EIMMY OCHOA --- #
+
+# palabras reservadas 
+reservadas_eimmy = {
+    'if': 'IF',
+    'else': 'ELSE',
+    'echo': 'ECHO',
+    'function': 'FUNCTION',
+    'return': 'RETURN',
+    'true': 'BOOLEANO',  
+    'false': 'BOOLEANO'
+}
+
+# delimitadores 
+t_LLAVE_IZQ  = r'\{'
+t_LLAVE_DER  = r'\}'
+t_PAR_IZQ    = r'\('
+t_PAR_DER    = r'\)'
+t_COR_IZQ    = r'\['
+t_COR_DER    = r'\]'
+t_PUNTO_COMA = r';'
+t_COMA       = r','
+
+# operadores 
+t_IGUALDAD   = r'=='  
+t_ASIGNACION = r'='
+t_SUMA       = r'\+'
+
+# --- Tipos de datos --- # 
+# cadenas
+t_CADENA = r'\"[^\"]*\"'
+
+# enteros
+def t_ENTERO(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+# variables
+def t_VARIABLE(t):
+    r'\$[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+# identificador para palabras reservadas
+def t_ID(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    t.type = reservadas_eimmy.get(t.value, 'ID')    
+    return t
+
+# --- FIN APORTE EIMMY OCHOA --- #
 
 
 
-# --- APORTE DIEGO PARRALES ---
+# --- INICIO APORTE DIEGO PARRALES --- #
+
+
+# --- FIN APORTE DIEGO PARRALES --- #
 
 
 
-# --- APORTE JULIANA BURGOS ---
+# --- INICIO APORTE JULIANA BURGOS --- #
+
+
+# --- FIN APORTE JULIANA BURGOS --- #
 
 
 
@@ -96,6 +157,5 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 
 # --- EJECUCIÓN ---
 if __name__ == '__main__':
-    # --- logica por implementar --- #
-    pass
+    #analizar_archivo('pruebas/algoritmo_eimmy.php', 'EimmyOchoa')
 
