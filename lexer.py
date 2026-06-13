@@ -12,7 +12,7 @@ tokens = [
     'IF', 'ELSE', 'ECHO', 'FUNCTION', 'RETURN',
     'LLAVE_IZQ', 'LLAVE_DER', 'PAR_IZQ', 'PAR_DER',
     'COR_IZQ', 'COR_DER', 'PUNTO_COMA', 'COMA',
-    'ID'
+    'ID', 'APERTURA_PHP', 'CIERRE_PHP'
 
     # --- DIEGO PARRALES --- #
     
@@ -25,6 +25,10 @@ tokens = [
 # ==========================================
 
 # --- INICIO APORTE EIMMY OCHOA --- #
+
+# inicio y cierre de archivo php
+t_APERTURA_PHP = r'<\?php'
+t_CIERRE_PHP   = r'\?>'
 
 # palabras reservadas 
 reservadas_eimmy = {
@@ -158,4 +162,3 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 # --- EJECUCIÓN ---
 if __name__ == '__main__':
     #analizar_archivo('pruebas/algoritmo_eimmy.php', 'EimmyOchoa')
-

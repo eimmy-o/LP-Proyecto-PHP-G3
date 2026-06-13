@@ -1,0 +1,122 @@
+=== RESULTADO DEL ANALISIS LEXICO ===
+
+TOKENS RECONOCIDOS:
+Linea 1: APERTURA_PHP -> '<?php'
+Linea 2: ID -> 'asignacion'
+Linea 2: ID -> 'simple'
+Linea 2: ID -> 'de'
+Linea 2: ID -> 'variables'
+Linea 3: VARIABLE -> '$edad'
+Linea 3: ASIGNACION -> '='
+Linea 3: ENTERO -> '25'
+Linea 3: PUNTO_COMA -> ';'
+Linea 5: ID -> 'arreglo'
+Linea 6: VARIABLE -> '$colores'
+Linea 6: ASIGNACION -> '='
+Linea 6: COR_IZQ -> '['
+Linea 6: CADENA -> '"Rojo"'
+Linea 6: COMA -> ','
+Linea 6: CADENA -> '"Verde"'
+Linea 6: COMA -> ','
+Linea 6: CADENA -> '"Azul"'
+Linea 6: COR_DER -> ']'
+Linea 6: PUNTO_COMA -> ';'
+Linea 8: IF -> 'if'
+Linea 8: ELSE -> 'else'
+Linea 9: IF -> 'if'
+Linea 9: PAR_IZQ -> '('
+Linea 9: VARIABLE -> '$estado'
+Linea 9: IGUALDAD -> '=='
+Linea 9: BOOLEANO -> 'true'
+Linea 9: PAR_DER -> ')'
+Linea 9: LLAVE_IZQ -> '{'
+Linea 10: ECHO -> 'echo'
+Linea 10: CADENA -> '"Activo"'
+Linea 10: PUNTO_COMA -> ';'
+Linea 11: LLAVE_DER -> '}'
+Linea 11: ELSE -> 'else'
+Linea 11: LLAVE_IZQ -> '{'
+Linea 12: ECHO -> 'echo'
+Linea 12: CADENA -> '"Inactivo"'
+Linea 12: PUNTO_COMA -> ';'
+Linea 13: LLAVE_DER -> '}'
+Linea 15: ID -> 'funcion'
+Linea 15: ID -> 'con'
+Linea 15: ID -> 'retorno'
+Linea 16: FUNCTION -> 'function'
+Linea 16: ID -> 'sumar'
+Linea 16: PAR_IZQ -> '('
+Linea 16: VARIABLE -> '$a'
+Linea 16: COMA -> ','
+Linea 16: VARIABLE -> '$b'
+Linea 16: PAR_DER -> ')'
+Linea 16: LLAVE_IZQ -> '{'
+Linea 17: RETURN -> 'return'
+Linea 17: VARIABLE -> '$a'
+Linea 17: SUMA -> '+'
+Linea 17: VARIABLE -> '$b'
+Linea 17: PUNTO_COMA -> ';'
+Linea 18: LLAVE_DER -> '}'
+Linea 19: CIERRE_PHP -> '?>'
+
+ERRORES ENCONTRADOS:
+Error lexico: Caracter no valido '/' en la linea 2
+Error lexico: Caracter no valido '/' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 2
+Error lexico: Caracter no valido ' ' en la linea 3
+Error lexico: Caracter no valido ' ' en la linea 3
+Error lexico: Caracter no valido '/' en la linea 5
+Error lexico: Caracter no valido '/' en la linea 5
+Error lexico: Caracter no valido ' ' en la linea 5
+Error lexico: Caracter no valido ' ' en la linea 5
+Error lexico: Caracter no valido ' ' en la linea 6
+Error lexico: Caracter no valido ' ' en la linea 6
+Error lexico: Caracter no valido ' ' en la linea 6
+Error lexico: Caracter no valido ' ' en la linea 6
+Error lexico: Caracter no valido '/' en la linea 8
+Error lexico: Caracter no valido '/' en la linea 8
+Error lexico: Caracter no valido ' ' en la linea 8
+Error lexico: Caracter no valido '-' en la linea 8
+Error lexico: Caracter no valido ' ' en la linea 8
+Error lexico: Caracter no valido ' ' en la linea 9
+Error lexico: Caracter no valido ' ' en la linea 9
+Error lexico: Caracter no valido ' ' en la linea 9
+Error lexico: Caracter no valido ' ' en la linea 9
+Error lexico: Caracter no valido ' ' en la linea 9
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 10
+Error lexico: Caracter no valido ' ' en la linea 11
+Error lexico: Caracter no valido ' ' en la linea 11
+Error lexico: Caracter no valido ' ' en la linea 11
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido ' ' en la linea 12
+Error lexico: Caracter no valido '/' en la linea 15
+Error lexico: Caracter no valido '/' en la linea 15
+Error lexico: Caracter no valido ' ' en la linea 15
+Error lexico: Caracter no valido ' ' en la linea 15
+Error lexico: Caracter no valido ' ' en la linea 15
+Error lexico: Caracter no valido ' ' en la linea 15
+Error lexico: Caracter no valido ' ' en la linea 16
+Error lexico: Caracter no valido ' ' en la linea 16
+Error lexico: Caracter no valido ' ' en la linea 16
+Error lexico: Caracter no valido ' ' en la linea 16
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
+Error lexico: Caracter no valido ' ' en la linea 17
