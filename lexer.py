@@ -12,12 +12,20 @@ tokens = [
     'IF', 'ELSE', 'ECHO', 'FUNCTION', 'RETURN',
     'LLAVE_IZQ', 'LLAVE_DER', 'PAR_IZQ', 'PAR_DER',
     'COR_IZQ', 'COR_DER', 'PUNTO_COMA', 'COMA',
-    'ID', 'APERTURA_PHP', 'CIERRE_PHP'
+    'ID', 'APERTURA_PHP', 'CIERRE_PHP',
 
     # --- DIEGO PARRALES --- #
-    
+    'FLOTANTE',
+    'SWITCH', 'CASE', 'DEFAULT', 'BREAK', 'WHILE', 'FOR',
+    'DEFINE',
+    'FLECHA', 'CONCATENACION', 'DOS_PUNTOS',
+    'RESTA', 'MULTIPLICACION', 'DIVISION', 'MODULO',
+    'IGUALDAD_ESTRICTA', 'DESIGUALDAD',
+    'MAYOR', 'MENOR', 'MAYOR_IGUAL', 'MENOR_IGUAL',
+    'AND', 'OR', 'NOT', 'SUMA_ASIG',
+
     # --- JULIANA BURGOS --- #
-    
+
 ]
 
 # ==========================================
@@ -37,8 +45,19 @@ reservadas_eimmy = {
     'echo': 'ECHO',
     'function': 'FUNCTION',
     'return': 'RETURN',
-    'true': 'BOOLEANO',  
+    'true': 'BOOLEANO',
     'false': 'BOOLEANO'
+}
+
+# palabras reservadas - Diego Parrales
+reservadas_diego = {
+    'switch':  'SWITCH',
+    'case':    'CASE',
+    'default': 'DEFAULT',
+    'break':   'BREAK',
+    'while':   'WHILE',
+    'for':     'FOR',
+    'define':  'DEFINE',
 }
 
 # delimitadores 
@@ -60,6 +79,12 @@ t_SUMA       = r'\+'
 # cadenas
 t_CADENA = r'\"[^\"]*\"'
 
+# flotantes - Diego Parrales
+def t_FLOTANTE(t):
+    r'\d+\.\d+'
+    t.value = float(t.value)
+    return t
+
 # enteros
 def t_ENTERO(t):
     r'\d+'
@@ -74,7 +99,8 @@ def t_VARIABLE(t):
 # identificador para palabras reservadas
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reservadas_eimmy.get(t.value, 'ID')    
+    todas_reservadas = {**reservadas_eimmy, **reservadas_diego}
+    t.type = todas_reservadas.get(t.value, 'ID')
     return t
 
 # --- FIN APORTE EIMMY OCHOA --- #
@@ -83,6 +109,43 @@ def t_ID(t):
 
 # --- INICIO APORTE DIEGO PARRALES --- #
 
+# ignorar espacios en blanco y tabulaciones
+t_ignore = ' \t\r'
+
+# comentarios de una linea (// y #) - descartar sin retornar token
+def t_COMENTARIO_LINEA(t):
+    r'(//|\#)[^\n]*'
+    pass
+
+# comentarios de bloque (/* ... */) - descartar y contar saltos de linea
+def t_COMENTARIO_BLOQUE(t):
+    r'/\*(.|\n)*?\*/'
+    t.lexer.lineno += t.value.count('\n')
+
+# operadores de comparacion (patrones mas largos primero para correcta precedencia)
+t_IGUALDAD_ESTRICTA = r'==='
+t_MAYOR_IGUAL       = r'>='
+t_MENOR_IGUAL       = r'<='
+t_DESIGUALDAD       = r'!='
+t_FLECHA            = r'=>'
+t_SUMA_ASIG         = r'\+='
+t_AND               = r'&&'
+t_OR                = r'\|\|'
+
+# operadores aritmeticos y de concatenacion
+t_RESTA             = r'-'
+t_MULTIPLICACION    = r'\*'
+t_DIVISION          = r'/'
+t_MODULO            = r'%'
+t_CONCATENACION     = r'\.'
+
+# operadores de comparacion simples (van despues de los de 2 caracteres)
+t_MAYOR             = r'>'
+t_MENOR             = r'<'
+t_NOT               = r'!'
+
+# delimitador adicional para case/default
+t_DOS_PUNTOS        = r':'
 
 # --- FIN APORTE DIEGO PARRALES --- #
 
@@ -162,3 +225,4 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 # --- EJECUCIÓN ---
 if __name__ == '__main__':
     #analizar_archivo('pruebas/algoritmo_eimmy.php', 'EimmyOchoa')
+    analizar_archivo('pruebas/algoritmo_diego.php', 'DiegoParrales')
