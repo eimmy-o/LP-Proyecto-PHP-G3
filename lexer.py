@@ -25,6 +25,9 @@ tokens = [
     'AND', 'OR', 'NOT', 'SUMA_ASIG',
 
     # --- JULIANA BURGOS --- #
+    'FOREACH', 'AS', 'CLASS',
+    'PUBLIC', 'PRIVATE', 'PROTECTED',
+    'STATIC', 'NEW', 'OBJETO_OP'
 
 ]
 
@@ -58,6 +61,18 @@ reservadas_diego = {
     'while':   'WHILE',
     'for':     'FOR',
     'define':  'DEFINE',
+}
+
+# palabras reservadar - Juliana Burgos
+reservadas_juliana = { 
+    'foreach'   : 'FOREACH',
+    'as'        : 'AS',
+    'class'     : 'CLASS',
+    'public'    : 'PUBLIC',
+    'private'   : 'PRIVATE',
+    'protected' : 'PROTECTED',
+    'static'    : 'STATIC',
+    'new'       : 'NEW',
 }
 
 # delimitadores 
@@ -99,7 +114,7 @@ def t_VARIABLE(t):
 # identificador para palabras reservadas
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
-    todas_reservadas = {**reservadas_eimmy, **reservadas_diego}
+    todas_reservadas = {**reservadas_eimmy, **reservadas_diego,**reservadas_juliana}
     t.type = todas_reservadas.get(t.value, 'ID')
     return t
 
@@ -153,7 +168,8 @@ t_DOS_PUNTOS        = r':'
 
 # --- INICIO APORTE JULIANA BURGOS --- #
 
-
+# Operador de acceso a propiedades y métodos de objeto
+t_OBJETO_OP = r'->'
 # --- FIN APORTE JULIANA BURGOS --- #
 
 
@@ -225,4 +241,5 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 # --- EJECUCIÓN ---
 if __name__ == '__main__':
     #analizar_archivo('pruebas/algoritmo_eimmy.php', 'EimmyOchoa')
-    analizar_archivo('pruebas/algoritmo_diego.php', 'DiegoParrales')
+    #analizar_archivo('pruebas/algoritmo_diego.php', 'DiegoParrales')
+    analizar_archivo('pruebas/algoritmo_juliana.php', 'JulianaBurgos')
