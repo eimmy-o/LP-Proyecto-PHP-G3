@@ -51,6 +51,7 @@ LP-Proyecto-PHP-G3/
 ├── pruebas/
 │   ├── algoritmo_eimmy.php   # Algoritmo de prueba - Eimmy Ochoa
 │   └── algoritmo_diego.php   # Algoritmo de prueba - Diego Parrales
+│   └── algoritmo_juliana.php   # Algoritmo de prueba - Julianna Burgos
 └── logs/                     # Logs generados por el analizador
 ```
 
@@ -90,12 +91,21 @@ LP-Proyecto-PHP-G3/
 | `DOS_PUNTOS` | Separador `case` | `:` |
 
 ### Juliana Burgos
-*(en desarrollo)*
+### Juliana Burgos
+| Token | Descripción | Ejemplo |
+|---|---|---|
+| `FOREACH`, `AS` | Bucle para recorrer arrays u objetos | `foreach ($array as $valor) { ... }` |
+| `CLASS` | Declaración de clase | `class Persona { ... }` |
+| `PUBLIC`, `PRIVATE`, `PROTECTED` | Modificadores de visibilidad de propiedades y métodos | `public $nombre; private $edad; protected function mostrar();` |
+| `STATIC` | Propiedades o métodos estáticos (no requieren instancia) | `public static $contador = 0;` |
+| `NEW` | Creación de objetos | `$obj = new Persona();` |
+| `OBJETO_OP` | Operador de objeto `->` | `$obj->metodo(); $obj->propiedad;` |
+
 
 ## Avance actual
 
-- [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales
-- [ ] Analizador Léxico — Juliana Burgos
+- [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales,Juliana Burgos
+- [ ] Analizador Léxico 
 - [ ] Analizador Sintáctico
 - [ ] Analizador Semántico
 - [ ] Interfaz Gráfica (GUI)

@@ -167,9 +167,11 @@ t_DOS_PUNTOS        = r':'
 
 
 # --- INICIO APORTE JULIANA BURGOS --- #
-
-# Operador de acceso a propiedades y métodos de objeto
-t_OBJETO_OP = r'->'
+# Operador de acceso a objetos: $auto->marca
+# Se define como función para tener prioridad sobre t_RESTA (-) definina por Diego
+def t_OBJETO_OP(t):
+    r'->'
+    return t
 # --- FIN APORTE JULIANA BURGOS --- #
 
 
