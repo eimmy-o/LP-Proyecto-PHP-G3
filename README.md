@@ -22,7 +22,7 @@ Sistema que procesa código fuente escrito en PHP y realiza análisis **léxico*
 ## Requisitos
 
 ```bash
-pip install ply
+pip install -r requirements.txt
 ```
 
 ## Uso
@@ -30,7 +30,7 @@ pip install ply
 Edita la línea al final de `lexer.py` indicando el archivo PHP a analizar y el nombre del desarrollador:
 
 ```python
-analizar_archivo('pruebas/algoritmo_diego.php', 'DiegoParrales')
+analizar_archivo('pruebas/algoritmo_nombre.php', 'NombreDesarrollador')
 ```
 
 Luego ejecuta:
@@ -101,10 +101,9 @@ LP-Proyecto-PHP-G3/
 | `OBJETO_OP` | Operador de objeto `->` | `$obj->metodo(); $obj->propiedad;` |
 
 
-## Avance actual
+## Fases del Proyecto
 
-- [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales,Juliana Burgos
-- [ ] Analizador Léxico 
+- [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
 - [ ] Analizador Sintáctico
 - [ ] Analizador Semántico
 - [ ] Interfaz Gráfica (GUI)

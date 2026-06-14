@@ -244,4 +244,4 @@ def analizar_archivo(ruta_archivo, nombre_desarrollador):
 if __name__ == '__main__':
     #analizar_archivo('pruebas/algoritmo_eimmy.php', 'EimmyOchoa')
     #analizar_archivo('pruebas/algoritmo_diego.php', 'DiegoParrales')
-    analizar_archivo('pruebas/algoritmo_juliana.php', 'JulianaBurgos')
+    #analizar_archivo('pruebas/algoritmo_juliana.php', 'JulianaBurgos')
