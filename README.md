@@ -91,7 +91,6 @@ LP-Proyecto-PHP-G3/
 | `DOS_PUNTOS` | Separador `case` | `:` |
 
 ### Juliana Burgos
-### Juliana Burgos
 | Token | Descripción | Ejemplo |
 |---|---|---|
 | `FOREACH`, `AS` | Bucle para recorrer arrays u objetos | `foreach ($array as $valor) { ... }` |
