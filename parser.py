@@ -18,9 +18,16 @@ def p_declaraciones(p):
     pass
 
 
+# Aquí se agruparán todas las sentencias válidas de PHP (aportes de eimmy, diego y juliana)
 def p_declaracion(p):
     '''declaracion : APERTURA_PHP 
-                   | CIERRE_PHP''' 
+                   | CIERRE_PHP
+                   | asignacion_simple
+                   | arreglo_indexado
+                   | estructura_if_else
+                   | funcion_retorno
+                   | impresion
+                   | return_statement''' 
     pass
 
 
@@ -30,12 +37,78 @@ def p_declaracion(p):
 
 # --- INICIO APORTE EIMMY OCHOA --- #
 
+# Asignación simple de variables primitivas
+def p_asignacion_simple(p):
+    '''asignacion_simple : VARIABLE ASIGNACION valor_primitivo PUNTO_COMA'''
+    pass
+
+# Estructura de datos: Arreglo indexado
+def p_arreglo_indexado(p):
+    '''arreglo_indexado : VARIABLE ASIGNACION COR_IZQ lista_valores COR_DER PUNTO_COMA'''
+    pass
+
+def p_lista_valores(p):
+    '''lista_valores : valor_primitivo
+                     | lista_valores COMA valor_primitivo
+                     | empty'''
+    pass
+
+# Estructura de control: Condicional if-else
+def p_estructura_if_else(p):
+    '''estructura_if_else : IF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER
+                          | IF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER ELSE LLAVE_IZQ bloque_codigo LLAVE_DER'''
+    pass
+
+# Definición de funciones: Función clásica con retorno
+def p_funcion_retorno(p):
+    '''funcion_retorno : FUNCTION ID PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
+    pass
+
+def p_parametros(p):
+    '''parametros : VARIABLE
+                  | parametros COMA VARIABLE
+                  | empty'''
+    pass
+
+def p_return_statement(p):
+    '''return_statement : RETURN expresion PUNTO_COMA'''
+    pass
+
+def p_valor_primitivo(p):
+    '''valor_primitivo : ENTERO
+                       | CADENA
+                       | BOOLEANO
+                       | VARIABLE'''
+    pass
+
+def p_bloque_codigo(p):
+    '''bloque_codigo : declaracion
+                     | bloque_codigo declaracion
+                     | empty'''
+    pass
+
+def p_empty(p):
+    '''empty :'''
+    pass
 
 # --- FIN APORTE EIMMY OCHOA --- #
 
 
 # --- INICIO APORTE DIEGO PARRALES --- #
 
+# necesito estas reglas para mi parte, ahi las completas estan solo declaradas para hacer mis prubeas (eimmy)
+# son tus reglas transversales (matemáticas, condiciones e impresión)
+def p_condicion(p):
+    '''condicion : valor_primitivo IGUALDAD valor_primitivo'''
+    pass
+
+def p_expresion(p):
+    '''expresion : valor_primitivo SUMA valor_primitivo'''
+    pass
+    
+def p_impresion(p):
+    '''impresion : ECHO valor_primitivo PUNTO_COMA'''
+    pass
 
 # --- FIN APORTE DIEGO PARRALES --- #
 
