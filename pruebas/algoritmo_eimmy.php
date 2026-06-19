@@ -1,19 +1,30 @@
 <?php
-// asignacion simple de variables 
-$edad = 25;
+// Asignacion simple de variables primitivas y expresiones matematicas
+$estado_activo = true;
+$capitulos_leidos = 450;
+$capitulos_totales = 1100;
+$dias_lectura = 15;
 
-// arreglo 
-$colores = ["Rojo", "Verde", "Azul"];
+// Arreglo indexado 
+$grimorio_tbr = ["One Piece", "Haikyuu", "Boku no Hero"];
 
-// if-else 
-if ($estado == true) { 
-    echo "Activo"; 
-} else { 
-    echo "Inactivo"; 
+// Funcion clasica con retorno y logica interna
+function calcularVelocidad($leidos, $dias) { 
+    $promedio = $leidos / $dias; 
+    return $promedio; 
 }
 
-// funcion con retorno 
-function sumar($a, $b) { 
-    return $a + $b; 
+// Llamada a la funcion y asignacion a una variable nueva
+$velocidad_actual = calcularVelocidad($capitulos_leidos, $dias_lectura);
+
+// Estructura if-else anidada con condiciones booleanas y relacionales compuestas
+if ($capitulos_leidos == $capitulos_totales) { 
+    echo "Lectura finalizada"; 
+} else { 
+    if ($velocidad_actual >= 20 && $estado_activo == true) {
+        echo "Buen ritmo de lectura";
+    } else {
+        echo "Debes leer mas rapido";
+    }
 }
 ?>
