@@ -53,4 +53,9 @@ while ($contador < 3) {
 // Llamadas a funciones
 saludar("Diego");
 saludar();
+
+// Ingreso de datos por teclado
+$nombre = readline();
+$linea = fgets(STDIN);
+echo $nombre;
 ?>

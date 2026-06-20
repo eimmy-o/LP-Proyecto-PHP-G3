@@ -1,0 +1,9 @@
+=== RESULTADO DEL ANALISIS SINTACTICO ===
+
+Archivo analizado: pruebas/algoritmo_diego_errores.php
+Usuario Git: raydan90s
+
+ERRORES SINTACTICOS ENCONTRADOS (3):
+Error de Sintaxis: token inesperado 'switch' (tipo SWITCH) en la linea 9
+Error de Sintaxis: token inesperado '}' (tipo LLAVE_DER) en la linea 13
+Error de Sintaxis: token inesperado ']' (tipo COR_DER) en la linea 16

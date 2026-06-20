@@ -1,0 +1,7 @@
+=== RESULTADO DEL ANALISIS SINTACTICO ===
+
+Archivo analizado: pruebas/algoritmo_diego.php
+Usuario Git: raydan90s
+
+Analisis completado: 0 errores de sintaxis.
+El codigo PHP esta escrito correctamente segun la gramatica definida.

@@ -101,9 +101,31 @@ LP-Proyecto-PHP-G3/
 | `OBJETO_OP` | Operador de objeto `->` | `$obj->metodo(); $obj->propiedad;` |
 
 
+## Analizador Sintáctico (`parser.py`)
+
+Construido con el módulo **yacc** de PLY sobre los tokens del léxico. Para probarlo:
+
+```bash
+python parser.py
+```
+
+Genera un log en `logs/` con el formato `sintactico-usuarioGit-DDMMYYYY-HHhMM.txt`.
+
+### Reglas sintácticas — Diego Parrales
+
+| Categoría | Regla / Estructura |
+|---|---|
+| **Transversales** | Expresiones aritméticas y de concatenación con 1+ operadores (con precedencia), condiciones booleanas con 1+ conectores lógicos (`&&`, `\|\|`), impresión (`echo`) |
+| **Asignación** | Asignación con expresiones/condiciones y asignación compuesta (`+=`) |
+| **Entrada por teclado** | `readline()` / `fgets(STDIN)` (reconocidas como llamada a función) |
+| **Estructura de datos** | Arreglo asociativo `["clave" => valor]` |
+| **Estructura de control** | `switch` / `case` / `default` (+ `while` de apoyo) |
+| **Tipo de función** | Función con parámetros por defecto `function f($x = "v") { }` |
+| **Constantes** | `define("NOMBRE", valor)` |
+
 ## Fases del Proyecto
 
 - [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
-- [ ] Analizador Sintáctico
+- [~] **Analizador Sintáctico** — Diego Parrales (transversales + switch, arreglo asociativo, función con defaults). Pendiente: Eimmy, Juliana
 - [ ] Analizador Semántico
 - [ ] Interfaz Gráfica (GUI)
