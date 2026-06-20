@@ -15,24 +15,15 @@ foreach ($precios as $nombre => $precio) {
 
 // definicion de clase con propiedades y metodo
 
-class Persona {
-    public $nombre;   // Propiedad pública
+class Carro {
 
-    // Constructor
-    public function __construct($nombre) {
-        $this->nombre = $nombre;
-    }
+    public $marca = "Toyota";
 
-    // Método público
-    public function saludar() {
-        return "Hola, mi nombre es " . $this->nombre;
-    }
+    private $modelo = "Corolla";
+
+    protected $anio = 2024;
 }
 
-// Instancia de la clase
-$persona = new Persona("Juliana");
-// Llamada al método
-echo $persona->saludar();
 
  
 // Funcion anonima para multiplicar dos numeros

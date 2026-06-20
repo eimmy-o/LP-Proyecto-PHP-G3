@@ -52,7 +52,18 @@ def p_declaracion(p):
                    | while_sentencia
                    | definicion_funcion_default
                    | llamada_sentencia
-                   | break_sentencia'''
+                   | break_sentencia
+                   | foreach_sentencia
+                   | clase
+                   | variable_estatica
+                   | closure'''
+    pass
+ 
+ # Variabale estatica 
+ def p_variable_estatica(p):
+    '''
+    variable_estatica : STATIC VARIABLE ASIGNACION expresion PUNTO_COMA
+    '''
     pass
 
 
@@ -301,6 +312,54 @@ def p_parametro_def(p):
 #   (reglas de Juliana: foreach, clases/objetos y closures)
 
 
+def p_foreach(p):
+    '''
+    foreach_sentencia : FOREACH PAR_IZQ VARIABLE AS VARIABLE PAR_DER
+                        LLAVE_IZQ bloque_codigo LLAVE_DER
+    '''
+    pass
+
+# Definicion de clases 
+def p_clase(p):
+    '''
+    clase : CLASS ID LLAVE_IZQ miembros_clase LLAVE_DER
+    '''
+    pass
+
+
+def p_miembros_clase(p):
+    '''
+    miembros_clase : miembro_clase
+                    | miembros_clase miembro_clase
+                    | empty
+    '''
+    pass
+
+def p_miembro_clase(p):
+    '''
+    miembro_clase : modificador VARIABLE ASIGNACION expresion PUNTO_COMA
+    '''
+    pass
+
+def p_modificador(p):
+    '''
+    modificador : PUBLIC
+                | PRIVATE
+                | PROTECTED
+    '''
+    pass
+
+
+# clousers
+def p_closure(p):
+    '''
+    closure : VARIABLE ASIGNACION FUNCTION
+              PAR_IZQ parametros PAR_DER
+              LLAVE_IZQ bloque_codigo LLAVE_DER
+              PUNTO_COMA
+    '''
+    pass
+
 # --- FIN APORTE JULIANA BURGOS --- #
 
 
@@ -365,3 +424,4 @@ if __name__ == '__main__':
     # Algoritmo de prueba (Diego) (constantes, arreglo asociativo, switch,
     # while, funcion con parametros por defecto, expresiones y condiciones).
     test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
+    
