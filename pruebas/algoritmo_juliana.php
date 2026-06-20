@@ -1,19 +1,12 @@
 <?php
 
 // Prueba de estructura foreach y arrays
-$frutas = ["manzana", "pera", "uva", "sandia"];
-$precios = ["manzana" => 1.50, "pera" => 0.75, "uva" => 2.00];
 
-foreach ($frutas as $fruta) {
-    echo $fruta;
+foreach ($usuarios as $usuario) {
+    echo $usuario;
 }
 
-foreach ($precios as $nombre => $precio) {
-    echo $nombre;
-    echo $precio;
-}
-
-// definicion de clase con propiedades y metodo
+// definicion de clase con propiedades 
 
 class Carro {
 
@@ -21,9 +14,11 @@ class Carro {
 
     private $modelo = "Corolla";
 
-    protected $anio = 2024;
 }
 
+$auto = new Carro();
+
+echo $auto->marca;
 
  
 // Funcion anonima para multiplicar dos numeros

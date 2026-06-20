@@ -1,0 +1,7 @@
+=== RESULTADO DEL ANALISIS SINTACTICO ===
+
+Archivo analizado: pruebas/algoritmo_juliana.php
+Usuario Git: juzjuz10
+
+Analisis completado: 0 errores de sintaxis.
+El codigo PHP esta escrito correctamente segun la gramatica definida.

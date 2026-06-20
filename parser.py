@@ -55,16 +55,12 @@ def p_declaracion(p):
                    | break_sentencia
                    | foreach_sentencia
                    | clase
+                   | instanciacion_objeto
                    | variable_estatica
                    | closure'''
     pass
  
- # Variabale estatica 
- def p_variable_estatica(p):
-    '''
-    variable_estatica : STATIC VARIABLE ASIGNACION expresion PUNTO_COMA
-    '''
-    pass
+
 
 
 # ==========================================
@@ -216,10 +212,14 @@ def p_expresion_valor(p):
 #     Ambas encajan en 'llamada_funcion' (ID '(' argumentos ')'), por lo que
 #     no necesita una regla propia. Ej:  $nombre = readline();
 # =====================================================================
+ ##Se modifico la funcion para aceptar los clouser(Juliana)
 
 def p_llamada_funcion(p):
     '''llamada_funcion : ID PAR_IZQ argumentos PAR_DER
-                       | ID PAR_IZQ PAR_DER'''
+                       | ID PAR_IZQ PAR_DER
+                       | VARIABLE PAR_IZQ argumentos PAR_DER 
+                       | VARIABLE PAR_IZQ PAR_DER
+                       '''
     pass
 
 def p_argumentos(p):
@@ -311,11 +311,18 @@ def p_parametro_def(p):
 # --- INICIO APORTE JULIANA BURGOS --- #
 #   (reglas de Juliana: foreach, clases/objetos y closures)
 
+ # Variabale estatica 
+def p_variable_estatica(p):
+    '''
+    variable_estatica : STATIC VARIABLE ASIGNACION expresion PUNTO_COMA
+    '''
+    pass
+
+# Definición de for each
 
 def p_foreach(p):
     '''
-    foreach_sentencia : FOREACH PAR_IZQ VARIABLE AS VARIABLE PAR_DER
-                        LLAVE_IZQ bloque_codigo LLAVE_DER
+    foreach_sentencia : FOREACH PAR_IZQ VARIABLE AS VARIABLE PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER
     '''
     pass
 
@@ -337,7 +344,8 @@ def p_miembros_clase(p):
 
 def p_miembro_clase(p):
     '''
-    miembro_clase : modificador VARIABLE ASIGNACION expresion PUNTO_COMA
+    miembro_clase : modificador VARIABLE PUNTO_COMA
+                  | modificador VARIABLE ASIGNACION expresion PUNTO_COMA
     '''
     pass
 
@@ -349,14 +357,30 @@ def p_modificador(p):
     '''
     pass
 
+#Instanciar Objetos
+def p_instanciacion_objeto(p):
+    '''
+    instanciacion_objeto : VARIABLE ASIGNACION NEW ID PAR_IZQ PAR_DER PUNTO_COMA
+    '''
+    pass
+
+# Acceso a atributos 
+def p_acceso_objeto(p):
+    '''
+    acceso_objeto : VARIABLE OBJETO_OP ID
+    '''
+    pass
+
+def p_expresion_objeto(p):
+    '''
+    expresion : acceso_objeto
+    '''
+    pass
 
 # clousers
 def p_closure(p):
     '''
-    closure : VARIABLE ASIGNACION FUNCTION
-              PAR_IZQ parametros PAR_DER
-              LLAVE_IZQ bloque_codigo LLAVE_DER
-              PUNTO_COMA
+    closure : VARIABLE ASIGNACION FUNCTION PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER PUNTO_COMA
     '''
     pass
 
@@ -423,5 +447,6 @@ def test_sintactico(ruta_archivo, usuario_git):
 if __name__ == '__main__':
     # Algoritmo de prueba (Diego) (constantes, arreglo asociativo, switch,
     # while, funcion con parametros por defecto, expresiones y condiciones).
-    test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
+    #test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
+    test_sintactico('pruebas/algoritmo_juliana_error.php', 'juzjuz10')
     
