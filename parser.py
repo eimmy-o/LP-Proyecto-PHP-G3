@@ -448,5 +448,6 @@ if __name__ == '__main__':
     # Algoritmo de prueba (Diego) (constantes, arreglo asociativo, switch,
     # while, funcion con parametros por defecto, expresiones y condiciones).
     #test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
-    test_sintactico('pruebas/algoritmo_juliana_error.php', 'juzjuz10')
+    #test_sintactico('pruebas/algoritmo_juliana_error.php', 'juzjuz10')
+    test_sintactico('pruebas/algoritmo_eimmy.php', 'eimmy-o')
     
