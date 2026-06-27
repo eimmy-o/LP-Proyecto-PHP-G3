@@ -1,0 +1,12 @@
+=== RESULTADO DEL ANALISIS SEMANTICO ===
+
+Archivo analizado: pruebas/algoritmo_semantico_diego.php
+Usuario Git: raydan90s
+
+ERRORES SEMANTICOS ENCONTRADOS (1):
+  - Error Semantico (linea 9): la constante 'PI' ya fue definida en la linea 7 y no puede ser redefinida ni sobrescrita.
+
+ADVERTENCIAS SEMANTICAS (3):
+  - Advertencia Semantica (linea 24): se usa el operador aritmetico '+' con una cadena; para unir texto use el operador de concatenacion '.'.
+  - Advertencia Semantica (linea 25): se usa el operador aritmetico '+' con una cadena; para unir texto use el operador de concatenacion '.'.
+  - Advertencia Semantica (linea 26): se concatenan dos valores numericos con '.'; verifique si en realidad deseaba una operacion aritmetica.

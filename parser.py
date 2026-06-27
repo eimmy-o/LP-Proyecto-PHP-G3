@@ -3,6 +3,10 @@ from lexer import tokens, lexer
 from datetime import datetime
 import os
 
+# Analizador semantico (Diego Parrales): el parser invoca sus "hooks" para
+# inferir tipos, registrar constantes/variables y validar las operaciones.
+from semantic import analizador_semantico
+
 # ==========================================
 # 0. PRECEDENCIA DE OPERADORES (Diego Parrales)
 #    De menor (arriba) a mayor (abajo) prioridad. Permite escribir las
@@ -76,7 +80,9 @@ def p_declaracion(p):
 # Eimmy siguen funcionando igual.
 def p_asignacion_simple(p):
     '''asignacion_simple : VARIABLE ASIGNACION expresion PUNTO_COMA'''
-    pass
+    # Hook semantico (Diego): registra el tipo de la variable para que la
+    # inferencia de tipos pueda validar operaciones posteriores con ella.
+    analizador_semantico.registrar_variable(p[1], p[3], p.lineno(1))
 
 # Estructura de datos: Arreglo indexado
 def p_arreglo_indexado(p):
@@ -115,7 +121,9 @@ def p_valor_primitivo(p):
                        | CADENA
                        | BOOLEANO
                        | VARIABLE'''
-    pass
+    # Hook semantico (Diego): adjunta el tipo inferido del atomo para que las
+    # reglas de expresion puedan validar las operaciones.
+    p[0] = analizador_semantico.descriptor_token(p.slice[1].type, p[1], p.lineno(1))
 
 def p_bloque_codigo(p):
     '''bloque_codigo : declaracion
@@ -160,7 +168,10 @@ def p_expresion_binaria(p):
                  | expresion DIVISION expresion
                  | expresion MODULO expresion
                  | expresion CONCATENACION expresion'''
-    pass
+    # REGLA SEMANTICA 2 (Diego): valida que la concatenacion (.) y los
+    # operadores aritmeticos se usen con tipos coherentes. p[2] es el simbolo
+    # del operador ('+', '.', '*', etc.).
+    p[0] = analizador_semantico.verificar_operacion(p[2], p[1], p[3], p.lineno(2))
 
 # Comparaciones (relacionales y de igualdad)
 def p_expresion_comparacion(p):
@@ -171,39 +182,46 @@ def p_expresion_comparacion(p):
                  | expresion MENOR expresion
                  | expresion MAYOR_IGUAL expresion
                  | expresion MENOR_IGUAL expresion'''
-    pass
+    # El resultado de una comparacion siempre es booleano.
+    p[0] = {'tipo': 'booleano', 'valor': None, 'lineno': p.lineno(2)}
 
 # Conectores logicos (&&, ||)
 def p_expresion_logica(p):
     '''expresion : expresion AND expresion
                  | expresion OR expresion'''
-    pass
+    p[0] = {'tipo': 'booleano', 'valor': None, 'lineno': p.lineno(2)}
 
 # Negacion logica y signo negativo
 def p_expresion_not(p):
     '''expresion : NOT expresion'''
-    pass
+    p[0] = {'tipo': 'booleano', 'valor': None, 'lineno': p.lineno(1)}
 
 def p_expresion_unaria(p):
     '''expresion : RESTA expresion %prec UMINUS'''
-    pass
+    # Un signo negativo conserva el tipo numerico del operando.
+    p[0] = p[2] if isinstance(p[2], dict) else {'tipo': 'desconocido', 'valor': None, 'lineno': p.lineno(1)}
 
 # Expresion entre parentesis
 def p_expresion_agrupada(p):
     '''expresion : PAR_IZQ expresion PAR_DER'''
-    pass
+    p[0] = p[2]   # el tipo es el de la expresion interna
 
 # Una llamada a funcion tambien es una expresion (resultado)
 def p_expresion_llamada(p):
     '''expresion : llamada_funcion'''
-    pass
+    # No se infiere el tipo de retorno de una funcion: queda como desconocido.
+    p[0] = {'tipo': 'desconocido', 'valor': None, 'lineno': p.lineno(1)}
 
 # Atomos: valores primitivos (Eimmy) + flotante + identificadores/constantes
 def p_expresion_valor(p):
     '''expresion : valor_primitivo
                  | FLOTANTE
                  | ID'''
-    pass
+    # Hook semantico (Diego): propaga el descriptor de tipo hacia arriba.
+    if isinstance(p[1], dict):
+        p[0] = p[1]                       # ya viene como descriptor (valor_primitivo)
+    else:
+        p[0] = analizador_semantico.descriptor_token(p.slice[1].type, p[1], p.lineno(1))
 
 
 # =====================================================================
@@ -283,7 +301,9 @@ def p_asignacion_compuesta(p):
 # =====================================================================
 def p_definicion_constante(p):
     '''definicion_constante : DEFINE PAR_IZQ expresion COMA expresion PAR_DER PUNTO_COMA'''
-    pass
+    # REGLA SEMANTICA 1 (Diego): una constante no puede redefinirse. p[3] es el
+    # nombre (cadena) y p[5] el valor asignado.
+    analizador_semantico.registrar_constante(p[3], p[5], p.lineno(1))
 
 
 # =====================================================================

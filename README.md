@@ -123,9 +123,33 @@ Genera un log en `logs/` con el formato `sintactico-usuarioGit-DDMMYYYY-HHhMM.tx
 | **Tipo de función** | Función con parámetros por defecto `function f($x = "v") { }` |
 | **Constantes** | `define("NOMBRE", valor)` |
 
+## Analizador Semántico (`semantic.py`)
+
+Valida la lógica del código una vez que el sintáctico confirma la estructura. Se
+implementa mediante *hooks* semánticos dentro de las reglas del parser, que
+infieren el **tipo** de cada expresión y registran constantes y variables en
+tablas de símbolos. Para probarlo:
+
+```bash
+python semantic.py
+```
+
+Genera un log en `logs/` con el formato `semantico-usuarioGit-DDMMYYYY-HHhMM.txt`,
+separando **errores** (rompen la lógica) de **advertencias** (código sospechoso).
+
+### Reglas semánticas — Diego Parrales
+
+| # | Regla | Descripción |
+|---|---|---|
+| 1 | **Constantes no reasignables** | Una constante definida con `define("X", ...)` no puede ser redefinida ni sobrescrita; un segundo `define` con el mismo nombre genera un **error semántico**. |
+| 2 | **Operaciones permitidas** | Verifica el uso lógico de los operadores: advierte si se usa un operador aritmético (`+`, `-`, `*`, `/`, `%`) con una **cadena pura**, y si se usa la concatenación (`.`) entre **dos números** (probable error lógico). |
+
+Archivo de prueba: `pruebas/algoritmo_semantico_diego.php` (sintácticamente
+correcto, con 1 error y 3 advertencias semánticas a propósito).
+
 ## Fases del Proyecto
 
 - [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
 - [~] **Analizador Sintáctico** — Diego Parrales (transversales + switch, arreglo asociativo, función con defaults). Pendiente: Eimmy, Juliana
-- [ ] Analizador Semántico
+- [~] **Analizador Semántico** — Diego Parrales (constantes no reasignables, operaciones permitidas). Pendiente: Eimmy, Juliana
 - [ ] Interfaz Gráfica (GUI)
