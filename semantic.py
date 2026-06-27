@@ -33,6 +33,7 @@ class AnalizadorSemantico:
         self.advertencias = []     # advertencias (codigo sospechoso)
         self.tabla_constantes = {} # nombre -> {'tipo', 'lineno'}
         self.tabla_variables = {}  # nombre -> {'tipo', 'lineno'}
+        self.nivel_ciclo = 0       # control para los break/continue 
 
     # ================================================================
     # --- INICIO APORTE DIEGO PARRALES --- #
@@ -140,7 +141,31 @@ class AnalizadorSemantico:
     #        switch.
     # ================================================================
 
-    # (pendiente: definir aqui los metodos de las reglas de Eimmy)
+    # REGLA 1: Verificar que la variable existe antes de usarse
+    def verificar_variable_inicializada(self, nombre, lineno):
+        # Buscamos en variables y constantes 
+        if nombre not in self.tabla_variables and nombre not in self.tabla_constantes:
+            self.errores.append(
+                f"Error Semantico (linea {lineno}): La variable '{nombre}' "
+                f"no ha sido inicializada antes de su uso."
+            )
+        # Retornamos el descriptor de tipo 
+        tipo = self.tabla_variables.get(nombre, {}).get('tipo', 'desconocido')
+        return {'tipo': tipo, 'valor': nombre, 'lineno': lineno}
+
+    # REGLA 2: Contexto de estructuras de control (break)
+    def entrar_ciclo(self):
+        self.nivel_ciclo += 1
+
+    def salir_ciclo(self):
+        self.nivel_ciclo -= 1
+
+    def verificar_break(self, lineno):
+        if self.nivel_ciclo == 0:
+            self.errores.append(
+                f"Error Semantico (linea {lineno}): Sentencia 'break' "
+                f"fuera de un contexto valido (ciclo o switch)."
+            )
 
     # --- FIN APORTE EIMMY OCHOA --- #
 
@@ -232,4 +257,5 @@ def test_semantico(ruta_archivo, usuario_git):
 if __name__ == '__main__':
     # Algoritmo de prueba semantico (Diego): constantes redefinidas y
     # operaciones aritmeticas/concatenacion con tipos incorrectos.
-    test_semantico('pruebas/algoritmo_semantico_diego.php', 'raydan90s')
+    #test_semantico('pruebas/algoritmo_semantico_diego.php', 'raydan90s')
+    test_semantico('pruebas/algoritmo_semantico_eimmy.php', 'eimmy-o')

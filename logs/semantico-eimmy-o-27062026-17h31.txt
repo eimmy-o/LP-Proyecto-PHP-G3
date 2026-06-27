@@ -1,0 +1,12 @@
+=== RESULTADO DEL ANALISIS SEMANTICO ===
+
+Archivo analizado: pruebas/algoritmo_eimmy.php
+Usuario Git: eimmy-o
+
+ERRORES SEMANTICOS ENCONTRADOS (0):
+  (ninguno)
+
+ADVERTENCIAS SEMANTICAS (0):
+  (ninguna)
+
+Analisis completado: el codigo es semanticamente correcto.
