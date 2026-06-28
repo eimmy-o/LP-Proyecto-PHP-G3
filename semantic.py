@@ -34,7 +34,8 @@ class AnalizadorSemantico:
         self.tabla_constantes = {} # nombre -> {'tipo', 'lineno'}
         self.tabla_variables = {}  # nombre -> {'tipo', 'lineno'}
         self.nivel_ciclo = 0       # control para los break/continue 
-
+        self.tabla_funciones = {}  # nombre -> {'min', 'max', 'lineno'} (Juliana)
+        self.pila_retorno = []         # pila de banderas 'tiene return' (Juliana)
     # ================================================================
     # --- INICIO APORTE DIEGO PARRALES --- #
     #   Inferencia de tipos + Regla 1 (constantes) + Regla 2 (operaciones).
@@ -172,14 +173,82 @@ class AnalizadorSemantico:
 
     # ================================================================
     # --- INICIO APORTE JULIANA BURGOS --- #
-    #   Reglas semanticas pendientes:
+    #   Reglas semanticas:
     #     1. Llamada de funciones: la cantidad de argumentos debe coincidir con
     #        los parametros declarados.
     #     2. Retorno en funciones: si una funcion se asigna a una variable debe
     #        contener obligatoriamente un return.
     # ================================================================
 
-    # (pendiente: definir aqui los metodos de las reglas de Juliana)
+    # ----------------------------------------------------------------
+    # REGLA 1: Llamada de funciones (cantidad de argumentos vs parametros)
+    # ----------------------------------------------------------------
+    # El parser llama a registrar_funcion(...) cuando reduce una declaracion
+    # de funcion (function_retorno / definicion_funcion_default), indicando
+    # cuantos parametros son obligatorios (minimo) y cuantos admite en total
+    # (maximo, contando los que tienen valor por defecto).
+    def registrar_funcion(self, nombre, minimo, maximo, lineno):
+        if nombre in self.tabla_funciones:
+            linea_original = self.tabla_funciones[nombre]['lineno']
+            self.errores.append(
+                f"Error Semantico (linea {lineno}): la funcion '{nombre}' ya "
+                f"fue declarada en la linea {linea_original}."
+            )
+            return
+        self.tabla_funciones[nombre] = {
+            'min': minimo,
+            'max': maximo,
+            'lineno': lineno,
+        }
+
+    # El parser llama a este metodo cuando reduce una llamada a funcion
+    # (ID '(' argumentos ')'), enviando el numero de argumentos detectados.
+    def verificar_llamada_funcion(self, nombre, num_argumentos, lineno):
+        info = self.tabla_funciones.get(nombre)
+        if info is None:
+            # Funcion no declarada por el usuario (puede ser nativa de PHP,
+            # p. ej. readline(), fgets(), intval(), etc.): no se valida,
+            # ya que el proyecto solo modela las funciones definidas en el
+            # propio script.
+            return
+
+        minimo, maximo = info['min'], info['max']
+        if num_argumentos < minimo or num_argumentos > maximo:
+            if minimo == maximo:
+                esperado = f"{minimo}"
+            else:
+                esperado = f"entre {minimo} y {maximo}"
+            self.errores.append(
+                f"Error Semantico (linea {lineno}): la funcion '{nombre}' "
+                f"espera {esperado} argumento(s) y se enviaron "
+                f"{num_argumentos}."
+            )
+
+    # ----------------------------------------------------------------
+    # REGLA 2: Retorno obligatorio en funciones asignadas a variables
+    #          (closures / funciones anonimas)
+    # ----------------------------------------------------------------
+    # Se usa una pila porque los closures pueden anidarse (un closure
+    # definido dentro de otro). Cada vez que el parser entra al cuerpo de
+    # un closure, se apila una bandera en False; si dentro del cuerpo se
+    # encuentra un 'return', la bandera del closure mas interno se marca
+    # en True; al cerrar el closure se desapila y se valida.
+    def entrar_funcion(self):
+        self.pila_retorno.append(False)
+
+    def registrar_return(self):
+        if self.pila_retorno:
+            self.pila_retorno[-1] = True
+
+    def verificar_retorno_closure(self, nombre_variable, lineno):
+        tiene_return = self.pila_retorno.pop() if self.pila_retorno else False
+        if not tiene_return:
+            self.errores.append(
+                f"Error Semantico (linea {lineno}): la funcion anonima "
+                f"asignada a la variable '{nombre_variable}' debe contener "
+                f"obligatoriamente la instruccion 'return'."
+            )
+    
 
     # --- FIN APORTE JULIANA BURGOS --- #
 
@@ -258,4 +327,5 @@ if __name__ == '__main__':
     # Algoritmo de prueba semantico (Diego): constantes redefinidas y
     # operaciones aritmeticas/concatenacion con tipos incorrectos.
     #test_semantico('pruebas/algoritmo_semantico_diego.php', 'raydan90s')
-    test_semantico('pruebas/algoritmo_semantico_eimmy.php', 'eimmy-o')
+    #test_semantico('pruebas/algoritmo_semantico_eimmy.php', 'eimmy-o')
+    test_semantico('pruebas/algoritmo_semantico_juliana.php', 'juzjuz10')

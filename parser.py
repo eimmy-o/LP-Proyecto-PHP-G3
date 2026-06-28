@@ -104,21 +104,25 @@ def p_estructura_if_else(p):
 # Definición de funciones: Función clásica con retorno
 def p_funcion_retorno(p):
     '''funcion_retorno : FUNCTION ID PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
-    pass
+    cantidad = p[4] if isinstance(p[4], int) else 0
+    analizador_semantico.registrar_funcion(p[2], cantidad, cantidad, p.lineno(2))
 
 def p_parametros(p):
     '''parametros : VARIABLE
                   | parametros COMA VARIABLE
                   | empty'''
-    # Registramos los parámetros de las funciones para evitar los falsos positivos
     if len(p) == 2 and p[1] is not None:
         analizador_semantico.registrar_variable(p[1], {'tipo': 'parametro'}, p.lineno(1))
+        p[0] = 1
     elif len(p) > 2:
         analizador_semantico.registrar_variable(p[3], {'tipo': 'parametro'}, p.lineno(3))
+        p[0] = p[1] + 1
+    else:
+        p[0] = 0
 
 def p_return_statement(p):
     '''return_statement : RETURN expresion PUNTO_COMA'''
-    pass
+    analizador_semantico.registrar_return()
 
 def p_valor_primitivo(p):
     '''valor_primitivo : ENTERO
@@ -254,12 +258,17 @@ def p_llamada_funcion(p):
                        | VARIABLE PAR_IZQ argumentos PAR_DER 
                        | VARIABLE PAR_IZQ PAR_DER
                        '''
-    pass
+    if p.slice[1].type == 'ID':
+        num_argumentos = p[3] if len(p) == 5 else 0
+        analizador_semantico.verificar_llamada_funcion(p[1], num_argumentos, p.lineno(1))
 
 def p_argumentos(p):
     '''argumentos : argumentos COMA expresion
                   | expresion'''
-    pass
+    if len(p) == 2:
+        p[0] = 1
+    else:
+        p[0] = p[1] + 1
 
 def p_llamada_sentencia(p):
     '''llamada_sentencia : llamada_funcion PUNTO_COMA'''
@@ -329,18 +338,24 @@ def p_definicion_constante(p):
 # =====================================================================
 def p_definicion_funcion_default(p):
     '''definicion_funcion_default : FUNCTION ID PAR_IZQ parametros_def PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
-    pass
+    lista_defaults = p[4] if isinstance(p[4], list) else []
+    minimo = sum(1 for tiene_default in lista_defaults if not tiene_default)
+    maximo = len(lista_defaults)
+    analizador_semantico.registrar_funcion(p[2], minimo, maximo, p.lineno(2))
 
 # Lista de parametros que admite valores por defecto (al menos uno con '=')
 def p_parametros_def(p):
     '''parametros_def : parametro_def
                       | parametros_def COMA parametro_def'''
-    pass
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_parametro_def(p):
     '''parametro_def : VARIABLE
                      | VARIABLE ASIGNACION expresion'''
-    pass
+    p[0] = (len(p) == 4)
 
 # --- FIN APORTE DIEGO PARRALES --- #
 
@@ -364,6 +379,10 @@ def p_foreach(p):
     pass
 
 # Definicion de clases 
+def p_marcador_entrar_funcion(p):
+    '''marcador_entrar_funcion : empty'''
+    analizador_semantico.entrar_funcion()
+
 def p_clase(p):
     '''
     clase : CLASS ID LLAVE_IZQ miembros_clase LLAVE_DER
@@ -417,10 +436,9 @@ def p_expresion_objeto(p):
 # clousers
 def p_closure(p):
     '''
-    closure : VARIABLE ASIGNACION FUNCTION PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER PUNTO_COMA
+    closure : VARIABLE ASIGNACION FUNCTION PAR_IZQ parametros PAR_DER LLAVE_IZQ marcador_entrar_funcion bloque_codigo LLAVE_DER PUNTO_COMA
     '''
-    pass
-
+    analizador_semantico.verificar_retorno_closure(p[1], p.lineno(1))
 # --- FIN APORTE JULIANA BURGOS --- #
 
 
@@ -485,6 +503,6 @@ if __name__ == '__main__':
     # Algoritmo de prueba (Diego) (constantes, arreglo asociativo, switch,
     # while, funcion con parametros por defecto, expresiones y condiciones).
     #test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
-    #test_sintactico('pruebas/algoritmo_juliana_error.php', 'juzjuz10')
-    test_sintactico('pruebas/algoritmo_eimmy.php', 'eimmy-o')
+    test_sintactico('pruebas/algoritmo_juliana.php', 'juzjuz10')
+    #test_sintactico('pruebas/algoritmo_eimmy.php', 'eimmy-o')
     
