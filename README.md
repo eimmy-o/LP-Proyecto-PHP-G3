@@ -5,6 +5,56 @@
 **Facultad:** FIEC  
 **Profesor:** Msc. Rodrigo Saraguro Bravo  
 
+---
+
+## Librerías necesarias para probar el proyecto
+
+| Librería | Versión | ¿Hay que instalarla? | Uso en el proyecto |
+|---|---|---|---|
+| **Python** | 3.8 o superior | Sí, es el intérprete base | Lenguaje en el que están escritos los tres analizadores |
+| **PLY** (Python Lex-Yacc) | 3.11 o superior | **Sí**, con `pip` | Módulos `lex` (analizador léxico) y `yacc` (analizador sintáctico) |
+| **Tkinter** | — | **No**, viene incluida en Python | Interfaz gráfica de usuario (`gui.py`) |
+
+### Instalación
+
+La única dependencia externa es **PLY**. Se instala con:
+
+```bash
+pip install -r requirements.txt
+```
+
+O directamente:
+
+```bash
+pip install ply
+```
+
+> **Nota:** Tkinter forma parte de la librería estándar de Python en Windows y
+> macOS, por lo que no requiere instalación. En algunas distribuciones de Linux
+> se instala aparte con `sudo apt install python3-tk`.
+
+### Ejecución
+
+La forma recomendada de probar el proyecto es a través de la **interfaz gráfica**,
+que ejecuta los tres analizadores sobre el código y muestra los errores con su
+número de línea:
+
+```bash
+python gui.py
+```
+
+También se puede ejecutar cada analizador por separado desde la consola:
+
+```bash
+python lexer.py      # análisis léxico
+python parser.py     # análisis sintáctico
+python semantic.py   # análisis semántico
+```
+
+En ambos casos los resultados se guardan como archivos de texto en la carpeta `logs/`.
+
+---
+
 ## Integrantes
 
 | Nombre | GitHub |
@@ -19,15 +69,9 @@
 
 Sistema que procesa código fuente escrito en PHP y realiza análisis **léxico**, **sintáctico** y **semántico**, implementado en Python usando la librería **PLY (Python Lex-Yacc)**.
 
-## Requisitos
+## Analizador Léxico (`lexer.py`)
 
-```bash
-pip install -r requirements.txt
-```
-
-## Uso
-
-Edita la línea al final de `lexer.py` indicando el archivo PHP a analizar y el nombre del desarrollador:
+Para ejecutarlo desde consola, edita la línea al final de `lexer.py` indicando el archivo PHP a analizar y el nombre del desarrollador:
 
 ```python
 analizar_archivo('pruebas/algoritmo_nombre.php', 'NombreDesarrollador')
@@ -46,13 +90,16 @@ El resultado se guarda automáticamente en la carpeta `logs/` con el formato:
 
 ```
 LP-Proyecto-PHP-G3/
-├── lexer.py                  # Analizador léxico (PLY)
-├── requirements.txt          # Dependencias (ply)
+├── gui.py                      # Interfaz gráfica (Tkinter)
+├── lexer.py                    # Analizador léxico (PLY - lex)
+├── parser.py                   # Analizador sintáctico (PLY - yacc)
+├── semantic.py                 # Analizador semántico
+├── requirements.txt            # Dependencias (ply)
 ├── pruebas/
-│   ├── algoritmo_eimmy.php   # Algoritmo de prueba - Eimmy Ochoa
-│   └── algoritmo_diego.php   # Algoritmo de prueba - Diego Parrales
-│   └── algoritmo_juliana.php   # Algoritmo de prueba - Julianna Burgos
-└── logs/                     # Logs generados por el analizador
+│   ├── algoritmo_eimmy.php     # Algoritmo de prueba - Eimmy Ochoa
+│   ├── algoritmo_diego.php     # Algoritmo de prueba - Diego Parrales
+│   └── algoritmo_juliana.php   # Algoritmo de prueba - Juliana Burgos
+└── logs/                       # Logs generados por los analizadores
 ```
 
 ## Tokens implementados
@@ -147,9 +194,32 @@ separando **errores** (rompen la lógica) de **advertencias** (código sospechos
 Archivo de prueba: `pruebas/algoritmo_semantico_diego.php` (sintácticamente
 correcto, con 1 error y 3 advertencias semánticas a propósito).
 
+## Interfaz Gráfica (GUI)
+
+Interfaz de escritorio construida con **Tkinter** (incluida en la librería estándar
+de Python, no requiere instalación adicional). Se ejecuta con:
+
+```bash
+python gui.py
+```
+
+La ventana integra los tres analizadores sin modificarlos: importa `lexer.py`,
+`parser.py` y `semantic.py` y los ejecuta sobre el código escrito en el editor.
+
+| Elemento | Descripción |
+|---|---|
+| **Editor** | Área de código PHP con numeración de líneas. Permite escribir directamente o abrir un archivo `.php`. |
+| **Botones** | `▶ Analizar todo` (ejecuta los tres analizadores), `Abrir .php`, `Guardar código`, `Guardar log` y `Limpiar`. Atajos: `F5`, `Ctrl+O`, `Ctrl+S`, `Ctrl+L`. |
+| **Pestañas de resultados** | Salida de cada analizador (tokens reconocidos, errores de sintaxis, errores y advertencias semánticas) y la **tabla de símbolos** con variables, constantes y funciones. |
+| **Tabla de errores** | Lista todos los errores con su **número de línea** y su tipo. Doble clic sobre un error salta a esa línea del editor, que además queda resaltada. |
+| **Selector de integrante** | Define el usuario de Git con el que se nombra el log generado desde la interfaz. |
+
+Los logs generados desde la GUI se guardan en `logs/` con el mismo formato de
+nombre que los generados por consola.
+
 ## Fases del Proyecto
 
 - [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
 - [~] **Analizador Sintáctico** — Diego Parrales (transversales + switch, arreglo asociativo, función con defaults). Pendiente: Eimmy, Juliana
 - [~] **Analizador Semántico** — Diego Parrales (constantes no reasignables, operaciones permitidas). Pendiente: Eimmy, Juliana
-- [ ] Interfaz Gráfica (GUI)
+- [x] **Interfaz Gráfica (GUI)** — Juliana Burgos

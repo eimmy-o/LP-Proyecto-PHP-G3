@@ -1,0 +1,90 @@
+Archivo analizado: (codigo escrito en la interfaz)
+Usuario Git: juzjuz10
+Fecha: 09/07/2026 21:03
+
+=== ANALISIS LEXICO ===
+
+Tokens reconocidos: 60
+Errores lexicos: 0
+
+TOKENS:
+  Linea   1: APERTURA_PHP         -> '<?php'
+  Linea   3: DEFINE               -> 'define'
+  Linea   3: PAR_IZQ              -> '('
+  Linea   3: CADENA               -> '"IVA"'
+  Linea   3: COMA                 -> ','
+  Linea   3: FLOTANTE             -> 0.15
+  Linea   3: PAR_DER              -> ')'
+  Linea   3: PUNTO_COMA           -> ';'
+  Linea   5: VARIABLE             -> '$nombre'
+  Linea   5: ASIGNACION           -> '='
+  Linea   5: CADENA               -> '"Juliana"'
+  Linea   5: PUNTO_COMA           -> ';'
+  Linea   6: VARIABLE             -> '$edad'
+  Linea   6: ASIGNACION           -> '='
+  Linea   6: ENTERO               -> 22
+  Linea   6: PUNTO_COMA           -> ';'
+  Linea   8: IF                   -> 'if'
+  Linea   8: PAR_IZQ              -> '('
+  Linea   8: VARIABLE             -> '$edad'
+  Linea   8: MAYOR_IGUAL          -> '>='
+  Linea   8: ENTERO               -> 18
+  Linea   8: PAR_DER              -> ')'
+  Linea   8: LLAVE_IZQ            -> '{'
+  Linea   9: ECHO                 -> 'echo'
+  Linea   9: CADENA               -> '"Mayor de edad"'
+  Linea   9: PUNTO_COMA           -> ';'
+  Linea  10: LLAVE_DER            -> '}'
+  Linea  10: ELSE                 -> 'else'
+  Linea  10: LLAVE_IZQ            -> '{'
+  Linea  11: ECHO                 -> 'echo'
+  Linea  11: CADENA               -> '"Menor de edad"'
+  Linea  11: PUNTO_COMA           -> ';'
+  Linea  12: LLAVE_DER            -> '}'
+  Linea  14: FUNCTION             -> 'function'
+  Linea  14: ID                   -> 'calcularTotal'
+  Linea  14: PAR_IZQ              -> '('
+  Linea  14: VARIABLE             -> '$precio'
+  Linea  14: COMA                 -> ','
+  Linea  14: VARIABLE             -> '$cantidad'
+  Linea  14: PAR_DER              -> ')'
+  Linea  14: LLAVE_IZQ            -> '{'
+  Linea  15: RETURN               -> 'return'
+  Linea  15: VARIABLE             -> '$precio'
+  Linea  15: MULTIPLICACION       -> '*'
+  Linea  15: VARIABLE             -> '$cantidad'
+  Linea  15: PUNTO_COMA           -> ';'
+  Linea  16: LLAVE_DER            -> '}'
+  Linea  18: VARIABLE             -> '$total'
+  Linea  18: ASIGNACION           -> '='
+  Linea  18: ID                   -> 'calcularTotal'
+  Linea  18: PAR_IZQ              -> '('
+  Linea  18: ENTERO               -> 10
+  Linea  18: COMA                 -> ','
+  Linea  18: ENTERO               -> 3
+  Linea  18: PAR_DER              -> ')'
+  Linea  18: PUNTO_COMA           -> ';'
+  Linea  19: ECHO                 -> 'echo'
+  Linea  19: VARIABLE             -> '$total'
+  Linea  19: PUNTO_COMA           -> ';'
+  Linea  21: CIERRE_PHP           -> '?>'
+
+Sin errores lexicos: todos los caracteres fueron reconocidos.
+
+
+=== ANALISIS SINTACTICO ===
+
+Analisis completado: 0 errores de sintaxis.
+El codigo PHP esta escrito correctamente segun la gramatica definida.
+
+
+=== ANALISIS SEMANTICO ===
+
+ERRORES SEMANTICOS (0):
+  (ninguno)
+
+ADVERTENCIAS SEMANTICAS (0):
+  (ninguna)
+
+Analisis completado: el codigo es semanticamente correcto.
+
