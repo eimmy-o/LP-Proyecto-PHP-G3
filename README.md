@@ -220,6 +220,6 @@ nombre que los generados por consola.
 ## Fases del Proyecto
 
 - [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
-- [~] **Analizador Sintáctico** — Diego Parrales (transversales + switch, arreglo asociativo, función con defaults). Pendiente: Eimmy, Juliana
-- [~] **Analizador Semántico** — Diego Parrales (constantes no reasignables, operaciones permitidas). Pendiente: Eimmy, Juliana
-- [x] **Interfaz Gráfica (GUI)** — Juliana Burgos
+- [x] **Analizador Sintáctico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
+- [x] **Analizador Semántico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
+- [x] **Interfaz Gráfica (GUI)** — Diego Parrales
