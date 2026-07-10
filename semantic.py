@@ -9,14 +9,6 @@
 #
 # Cada integrante define sus reglas semanticas como metodos de la clase
 # AnalizadorSemantico, delimitados con marcadores INICIO/FIN APORTE.
-#
-# --- REGLAS SEMANTICAS - DIEGO PARRALES (raydan90s) ---
-#   1. Asignacion de tipo (Constantes): una constante definida con define()
-#      NO puede ser redefinida ni sobrescrita en lineas posteriores.
-#   2. Operaciones permitidas: el operador de concatenacion (.) debe usarse
-#      de forma logica y se emite una ADVERTENCIA si se intenta usar un
-#      operador aritmetico (+, -, *, /, %) con una cadena pura.
-# ==========================================
 
 from datetime import datetime
 import os
