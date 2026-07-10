@@ -1,0 +1,14 @@
+=== RESULTADO DEL ANALISIS SINTACTICO ===
+
+Archivo analizado: pruebas/algoritmo_juliana_error.php
+Usuario Git: juzjuz10
+
+ERRORES SINTACTICOS ENCONTRADOS (8):
+Error de Sintaxis: token inesperado '$usuario' (tipo VARIABLE) en la linea 9
+Error de Sintaxis: token inesperado '}' (tipo LLAVE_DER) en la linea 13
+Error de Sintaxis: token inesperado '}' (tipo LLAVE_DER) en la linea 26
+Error de Sintaxis: token inesperado ';' (tipo PUNTO_COMA) en la linea 36
+Error de Sintaxis: token inesperado ';' (tipo PUNTO_COMA) en la linea 45
+Error de Sintaxis: token inesperado ';' (tipo PUNTO_COMA) en la linea 56
+Error de Sintaxis: token inesperado 'echo' (tipo ECHO) en la linea 82
+Error de Sintaxis: token inesperado ';' (tipo PUNTO_COMA) en la linea 82

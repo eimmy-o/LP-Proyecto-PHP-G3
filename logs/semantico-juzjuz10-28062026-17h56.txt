@@ -1,0 +1,13 @@
+=== RESULTADO DEL ANALISIS SEMANTICO ===
+
+Archivo analizado: pruebas/algoritmo_semantico_juliana.php
+Usuario Git: juzjuz10
+
+ERRORES SEMANTICOS ENCONTRADOS (4):
+  - Error Semantico (linea 23): la funcion 'sumar' espera 2 argumento(s) y se enviaron 1.
+  - Error Semantico (linea 24): la funcion 'sumar' espera 2 argumento(s) y se enviaron 3.
+  - Error Semantico (linea 25): la funcion 'saludar' espera entre 0 y 1 argumento(s) y se enviaron 2.
+  - Error Semantico (linea 37): la funcion anonima asignada a la variable '$imprimirSaludo' debe contener obligatoriamente la instruccion 'return'.
+
+ADVERTENCIAS SEMANTICAS (0):
+  (ninguna)

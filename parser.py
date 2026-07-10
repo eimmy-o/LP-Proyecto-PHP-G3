@@ -104,26 +104,37 @@ def p_estructura_if_else(p):
 # Definición de funciones: Función clásica con retorno
 def p_funcion_retorno(p):
     '''funcion_retorno : FUNCTION ID PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
-    pass
+    cantidad = p[4] if isinstance(p[4], int) else 0
+    analizador_semantico.registrar_funcion(p[2], cantidad, cantidad, p.lineno(2))
 
 def p_parametros(p):
     '''parametros : VARIABLE
                   | parametros COMA VARIABLE
                   | empty'''
-    pass
+    if len(p) == 2 and p[1] is not None:
+        analizador_semantico.registrar_variable(p[1], {'tipo': 'parametro'}, p.lineno(1))
+        p[0] = 1
+    elif len(p) > 2:
+        analizador_semantico.registrar_variable(p[3], {'tipo': 'parametro'}, p.lineno(3))
+        p[0] = p[1] + 1
+    else:
+        p[0] = 0
 
 def p_return_statement(p):
     '''return_statement : RETURN expresion PUNTO_COMA'''
-    pass
+    analizador_semantico.registrar_return()
 
 def p_valor_primitivo(p):
     '''valor_primitivo : ENTERO
                        | CADENA
                        | BOOLEANO
                        | VARIABLE'''
-    # Hook semantico (Diego): adjunta el tipo inferido del atomo para que las
-    # reglas de expresion puedan validar las operaciones.
-    p[0] = analizador_semantico.descriptor_token(p.slice[1].type, p[1], p.lineno(1))
+    if p.slice[1].type == 'VARIABLE':
+        # Hook Regla 1: Validamos si existe (eimmy)
+        p[0] = analizador_semantico.verificar_variable_inicializada(p[1], p.lineno(1))
+    else:
+        # Si es un número o texto, usamos el descriptor de Diego
+        p[0] = analizador_semantico.descriptor_token(p.slice[1].type, p[1], p.lineno(1))
 
 def p_bloque_codigo(p):
     '''bloque_codigo : declaracion
@@ -134,6 +145,15 @@ def p_bloque_codigo(p):
 def p_empty(p):
     '''empty :'''
     pass
+
+# Marcadores para controlar el contexto de los ciclos (Para la regla del break)
+def p_marcador_entrar_ciclo(p):
+    '''marcador_entrar_ciclo : empty'''
+    analizador_semantico.entrar_ciclo()
+
+def p_marcador_salir_ciclo(p):
+    '''marcador_salir_ciclo : empty'''
+    analizador_semantico.salir_ciclo()
 
 # --- FIN APORTE EIMMY OCHOA --- #
 
@@ -238,12 +258,17 @@ def p_llamada_funcion(p):
                        | VARIABLE PAR_IZQ argumentos PAR_DER 
                        | VARIABLE PAR_IZQ PAR_DER
                        '''
-    pass
+    if p.slice[1].type == 'ID':
+        num_argumentos = p[3] if len(p) == 5 else 0
+        analizador_semantico.verificar_llamada_funcion(p[1], num_argumentos, p.lineno(1))
 
 def p_argumentos(p):
     '''argumentos : argumentos COMA expresion
                   | expresion'''
-    pass
+    if len(p) == 2:
+        p[0] = 1
+    else:
+        p[0] = p[1] + 1
 
 def p_llamada_sentencia(p):
     '''llamada_sentencia : llamada_funcion PUNTO_COMA'''
@@ -267,7 +292,7 @@ def p_par(p):
 # 2.4 ESTRUCTURA DE CONTROL: switch / case / default
 # =====================================================================
 def p_switch_sentencia(p):
-    '''switch_sentencia : SWITCH PAR_IZQ expresion PAR_DER LLAVE_IZQ lista_casos LLAVE_DER'''
+    '''switch_sentencia : SWITCH PAR_IZQ expresion PAR_DER LLAVE_IZQ marcador_entrar_ciclo lista_casos marcador_salir_ciclo LLAVE_DER'''
     pass
 
 def p_lista_casos(p):
@@ -283,11 +308,12 @@ def p_caso(p):
 # break como sentencia (valido dentro de switch y de bucles)
 def p_break_sentencia(p):
     '''break_sentencia : BREAK PUNTO_COMA'''
-    pass
+    # Hook Regla 2: Validamos el break (eimmy)
+    analizador_semantico.verificar_break(p.lineno(1))
 
 # Estructura de control de apoyo: while
 def p_while_sentencia(p):
-    '''while_sentencia : WHILE PAR_IZQ expresion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
+    '''while_sentencia : WHILE PAR_IZQ expresion PAR_DER LLAVE_IZQ marcador_entrar_ciclo bloque_codigo marcador_salir_ciclo LLAVE_DER'''
     pass
 
 # Asignacion compuesta (+=), usada tipicamente dentro de bucles
@@ -312,18 +338,24 @@ def p_definicion_constante(p):
 # =====================================================================
 def p_definicion_funcion_default(p):
     '''definicion_funcion_default : FUNCTION ID PAR_IZQ parametros_def PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
-    pass
+    lista_defaults = p[4] if isinstance(p[4], list) else []
+    minimo = sum(1 for tiene_default in lista_defaults if not tiene_default)
+    maximo = len(lista_defaults)
+    analizador_semantico.registrar_funcion(p[2], minimo, maximo, p.lineno(2))
 
 # Lista de parametros que admite valores por defecto (al menos uno con '=')
 def p_parametros_def(p):
     '''parametros_def : parametro_def
                       | parametros_def COMA parametro_def'''
-    pass
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
 
 def p_parametro_def(p):
     '''parametro_def : VARIABLE
                      | VARIABLE ASIGNACION expresion'''
-    pass
+    p[0] = (len(p) == 4)
 
 # --- FIN APORTE DIEGO PARRALES --- #
 
@@ -342,11 +374,15 @@ def p_variable_estatica(p):
 
 def p_foreach(p):
     '''
-    foreach_sentencia : FOREACH PAR_IZQ VARIABLE AS VARIABLE PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER
+    foreach_sentencia : FOREACH PAR_IZQ VARIABLE AS VARIABLE PAR_DER LLAVE_IZQ marcador_entrar_ciclo bloque_codigo marcador_salir_ciclo LLAVE_DER
     '''
     pass
 
 # Definicion de clases 
+def p_marcador_entrar_funcion(p):
+    '''marcador_entrar_funcion : empty'''
+    analizador_semantico.entrar_funcion()
+
 def p_clase(p):
     '''
     clase : CLASS ID LLAVE_IZQ miembros_clase LLAVE_DER
@@ -400,10 +436,9 @@ def p_expresion_objeto(p):
 # clousers
 def p_closure(p):
     '''
-    closure : VARIABLE ASIGNACION FUNCTION PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER PUNTO_COMA
+    closure : VARIABLE ASIGNACION FUNCTION PAR_IZQ parametros PAR_DER LLAVE_IZQ marcador_entrar_funcion bloque_codigo LLAVE_DER PUNTO_COMA
     '''
-    pass
-
+    analizador_semantico.verificar_retorno_closure(p[1], p.lineno(1))
 # --- FIN APORTE JULIANA BURGOS --- #
 
 
@@ -468,6 +503,6 @@ if __name__ == '__main__':
     # Algoritmo de prueba (Diego) (constantes, arreglo asociativo, switch,
     # while, funcion con parametros por defecto, expresiones y condiciones).
     #test_sintactico('pruebas/algoritmo_diego.php', 'raydan90s')
-    #test_sintactico('pruebas/algoritmo_juliana_error.php', 'juzjuz10')
-    test_sintactico('pruebas/algoritmo_eimmy.php', 'eimmy-o')
+    test_sintactico('pruebas/algoritmo_juliana.php', 'juzjuz10')
+    #test_sintactico('pruebas/algoritmo_eimmy.php', 'eimmy-o')
     
