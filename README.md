@@ -222,4 +222,4 @@ nombre que los generados por consola.
 - [x] **Analizador Léxico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
 - [x] **Analizador Sintáctico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
 - [x] **Analizador Semántico** — Eimmy Ochoa, Diego Parrales, Juliana Burgos
-- [x] **Interfaz Gráfica (GUI)** — Diego Parrales
+- [x] **Interfaz Gráfica (GUI)** — Juliana Burgos
