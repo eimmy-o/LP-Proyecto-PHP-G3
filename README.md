@@ -135,6 +135,7 @@ LP-Proyecto-PHP-G3/
 | `AND`, `OR`, `NOT` | Lógicos | `&&`, `\|\|`, `!` |
 | `RESTA`, `MULTIPLICACION`, `DIVISION`, `MODULO` | Aritméticos | `-`, `*`, `/`, `%` |
 | `SUMA_ASIG` | Asignación compuesta | `+=` |
+| `INCREMENTO`, `DECREMENTO` | Incremento / decremento | `$i++`, `$i--` |
 | `DOS_PUNTOS` | Separador `case` | `:` |
 
 ### Juliana Burgos
@@ -167,8 +168,12 @@ Genera un log en `logs/` con el formato `sintactico-usuarioGit-DDMMYYYY-HHhMM.tx
 | **Entrada por teclado** | `readline()` / `fgets(STDIN)` (reconocidas como llamada a función) |
 | **Estructura de datos** | Arreglo asociativo `["clave" => valor]` |
 | **Estructura de control** | `switch` / `case` / `default` (+ `while` de apoyo) |
+| **Bucle `for`** | `for ($i = 0; $i < 10; $i++) { }` — el paso admite `$i++`, `$i--`, `$i += n` y `$i = expr`. Incremento como sentencia: `$contador++;` |
 | **Tipo de función** | Función con parámetros por defecto `function f($x = "v") { }` |
 | **Constantes** | `define("NOMBRE", valor)` |
+
+Archivo de prueba del bucle: `pruebas/algoritmo_for_diego.php` (0 errores sintácticos
+y 0 semánticos; incluye un `break` dentro del `for` para validar el contexto de ciclo).
 
 ## Analizador Semántico (`semantic.py`)
 

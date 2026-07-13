@@ -9,7 +9,7 @@ tokens = [
     # --- EIMMY OCHOA --- #
     'VARIABLE', 'ENTERO', 'BOOLEANO', 'CADENA',
     'ASIGNACION', 'IGUALDAD', 'SUMA',
-    'IF', 'ELSE', 'ECHO', 'FUNCTION', 'RETURN',
+    'IF', 'ELSE', 'ELSEIF', 'ECHO', 'FUNCTION', 'RETURN',
     'LLAVE_IZQ', 'LLAVE_DER', 'PAR_IZQ', 'PAR_DER',
     'COR_IZQ', 'COR_DER', 'PUNTO_COMA', 'COMA',
     'ID', 'APERTURA_PHP', 'CIERRE_PHP',
@@ -23,6 +23,7 @@ tokens = [
     'IGUALDAD_ESTRICTA', 'DESIGUALDAD',
     'MAYOR', 'MENOR', 'MAYOR_IGUAL', 'MENOR_IGUAL',
     'AND', 'OR', 'NOT', 'SUMA_ASIG',
+    'INCREMENTO', 'DECREMENTO',
 
     # --- JULIANA BURGOS --- #
     'FOREACH', 'AS', 'CLASS',
@@ -41,10 +42,11 @@ tokens = [
 t_APERTURA_PHP = r'<\?php'
 t_CIERRE_PHP   = r'\?>'
 
-# palabras reservadas 
+# palabras reservadas
 reservadas_eimmy = {
     'if': 'IF',
     'else': 'ELSE',
+    'elseif': 'ELSEIF',   # PHP admite 'elseif' junto y 'else if' separado
     'echo': 'ECHO',
     'function': 'FUNCTION',
     'return': 'RETURN',
@@ -146,6 +148,12 @@ t_FLECHA            = r'=>'
 t_SUMA_ASIG         = r'\+='
 t_AND               = r'&&'
 t_OR                = r'\|\|'
+
+# incremento y decremento (usados en el paso del bucle for: $i++)
+# Sus regex son mas largas que las de SUMA y RESTA, por lo que PLY las evalua
+# primero y '$i++' no se lee como '$i + + '.
+t_INCREMENTO        = r'\+\+'
+t_DECREMENTO        = r'--'
 
 # operadores aritmeticos y de concatenacion
 t_RESTA             = r'-'

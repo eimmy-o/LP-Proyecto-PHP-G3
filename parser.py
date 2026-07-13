@@ -54,6 +54,8 @@ def p_declaracion(p):
                    | definicion_constante
                    | switch_sentencia
                    | while_sentencia
+                   | for_sentencia
+                   | incremento_sentencia
                    | definicion_funcion_default
                    | llamada_sentencia
                    | break_sentencia
@@ -95,10 +97,24 @@ def p_lista_valores(p):
                      | empty'''
     pass
 
-# Estructura de control: Condicional if-else
+# Estructura de control: Condicional if / else if / elseif / else
+# Se separa la cabecera del if ('if_bloque') de lo que puede venir despues
+# ('cola_condicional'). Como la cola puede volver a contener un if completo,
+# la regla es recursiva y admite cadenas de cualquier longitud:
+#   if (..) {..} else if (..) {..} elseif (..) {..} else {..}
 def p_estructura_if_else(p):
-    '''estructura_if_else : IF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER
-                          | IF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER ELSE LLAVE_IZQ bloque_codigo LLAVE_DER'''
+    '''estructura_if_else : if_bloque cola_condicional'''
+    pass
+
+def p_if_bloque(p):
+    '''if_bloque : IF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
+    pass
+
+def p_cola_condicional(p):
+    '''cola_condicional : empty
+                        | ELSE LLAVE_IZQ bloque_codigo LLAVE_DER
+                        | ELSE estructura_if_else
+                        | ELSEIF PAR_IZQ condicion PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER cola_condicional'''
     pass
 
 # Definición de funciones: Función clásica con retorno
@@ -323,6 +339,34 @@ def p_asignacion_compuesta(p):
 
 
 # =====================================================================
+# 2.4.b ESTRUCTURA DE CONTROL: bucle for
+#     for ($i = 0; $i < 10; $i++) { ... }
+#     La cabecera tiene 3 partes separadas por ';':
+#       - inicializacion: reutiliza 'asignacion_simple', que ya incluye el ';'
+#       - condicion: una 'expresion' booleana, seguida de su ';'
+#       - paso: 'actualizacion_for' (sin ';', porque va pegado al ')')
+#     Los marcadores de ciclo habilitan el uso de 'break' dentro del cuerpo.
+# =====================================================================
+def p_for_sentencia(p):
+    '''for_sentencia : FOR PAR_IZQ asignacion_simple expresion PUNTO_COMA actualizacion_for PAR_DER LLAVE_IZQ marcador_entrar_ciclo bloque_codigo marcador_salir_ciclo LLAVE_DER'''
+    pass
+
+# Paso del bucle: admite $i++, $i--, $i += n  y  $i = expresion
+def p_actualizacion_for(p):
+    '''actualizacion_for : VARIABLE INCREMENTO
+                         | VARIABLE DECREMENTO
+                         | VARIABLE SUMA_ASIG expresion
+                         | VARIABLE ASIGNACION expresion'''
+    pass
+
+# Incremento/decremento como sentencia independiente: $contador++;
+def p_incremento_sentencia(p):
+    '''incremento_sentencia : VARIABLE INCREMENTO PUNTO_COMA
+                            | VARIABLE DECREMENTO PUNTO_COMA'''
+    pass
+
+
+# =====================================================================
 # 2.5 DECLARACION DE CONSTANTES
 # =====================================================================
 def p_definicion_constante(p):
@@ -355,7 +399,13 @@ def p_parametros_def(p):
 def p_parametro_def(p):
     '''parametro_def : VARIABLE
                      | VARIABLE ASIGNACION expresion'''
-    p[0] = (len(p) == 4)
+    tiene_default = (len(p) == 4)
+    # El parametro queda registrado en la tabla de simbolos, para que al usarlo
+    # dentro del cuerpo no se reporte como "no inicializado". Si tiene valor por
+    # defecto se hereda su tipo ($x = "hola" -> cadena); si no, queda generico.
+    descriptor = p[3] if tiene_default and isinstance(p[3], dict) else {'tipo': 'parametro'}
+    analizador_semantico.registrar_variable(p[1], descriptor, p.lineno(1))
+    p[0] = tiene_default
 
 # --- FIN APORTE DIEGO PARRALES --- #
 

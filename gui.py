@@ -76,7 +76,7 @@ INTEGRANTES = {
 
 # Palabras reservadas de PHP que reconoce el lexer (para el resaltado)
 PALABRAS_RESERVADAS = (
-    "if", "else", "echo", "function", "return", "true", "false",
+    "if", "else", "elseif", "echo", "function", "return", "true", "false",
     "switch", "case", "default", "break", "while", "for", "define",
     "foreach", "as", "class", "public", "private", "protected",
     "static", "new",
