@@ -1,9 +1,9 @@
 <?php
 
 // Prueba de estructura foreach y arrays
-
-foreach ($usuarios as $usuario) {
-    echo $usuario;
+$numeros = [1,2,3,4];
+foreach ($numeros as $numero) {
+    echo $numero;
 }
 
 // definicion de clase con propiedades 
@@ -29,7 +29,9 @@ $multiplicar = function($x, $y) {
 static $contador = 0;
 $contador = $contador + 1;
 
+
 echo $multiplicar(3, 4);
 echo $contador;
+
 
 ?>
