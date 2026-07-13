@@ -104,22 +104,21 @@ def p_estructura_if_else(p):
 # Definición de funciones: Función clásica con retorno
 def p_funcion_retorno(p):
     '''funcion_retorno : FUNCTION ID PAR_IZQ parametros PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
-    cantidad = p[4] if isinstance(p[4], int) else 0
-    analizador_semantico.registrar_funcion(p[2], cantidad, cantidad, p.lineno(2))
+    cantidad = p[4] if isinstance(p[4], int) else 0  #verifica que la cantidad parametros retornada sea un int
+    analizador_semantico.registrar_funcion(p[2], cantidad, cantidad, p.lineno(2)) # guarda la funcion, la cantidad max, y min de parametros y la linea de la funcion)
 
 def p_parametros(p):
     '''parametros : VARIABLE
                   | parametros COMA VARIABLE
                   | empty'''
-    if len(p) == 2 and p[1] is not None:
-        analizador_semantico.registrar_variable(p[1], {'tipo': 'parametro'}, p.lineno(1))
+    if len(p) == 2 and p[1] is not None: # primer argumento
+        analizador_semantico.registrar_variable(p[1], {'tipo': 'parametro'}, p.lineno(1)) # guarda la variable, y la linea que se encuentra
         p[0] = 1
     elif len(p) > 2:
         analizador_semantico.registrar_variable(p[3], {'tipo': 'parametro'}, p.lineno(3))
-        p[0] = p[1] + 1
+        p[0] = p[1] + 1 # acumulativo 
     else:
-        p[0] = 0
-
+        p[0] = 0 # caso que no tenga argumentos
 def p_return_statement(p):
     '''return_statement : RETURN expresion PUNTO_COMA'''
     analizador_semantico.registrar_return()
@@ -255,12 +254,13 @@ def p_expresion_valor(p):
 def p_llamada_funcion(p):
     '''llamada_funcion : ID PAR_IZQ argumentos PAR_DER
                        | ID PAR_IZQ PAR_DER
-                       | VARIABLE PAR_IZQ argumentos PAR_DER 
+                       | VARIABLE PAR_IZQ argumentos PAR_DER  
                        | VARIABLE PAR_IZQ PAR_DER
                        '''
     if p.slice[1].type == 'ID':
         num_argumentos = p[3] if len(p) == 5 else 0
         analizador_semantico.verificar_llamada_funcion(p[1], num_argumentos, p.lineno(1))
+   
 
 def p_argumentos(p):
     '''argumentos : argumentos COMA expresion
@@ -338,8 +338,9 @@ def p_definicion_constante(p):
 # =====================================================================
 def p_definicion_funcion_default(p):
     '''definicion_funcion_default : FUNCTION ID PAR_IZQ parametros_def PAR_DER LLAVE_IZQ bloque_codigo LLAVE_DER'''
+
     lista_defaults = p[4] if isinstance(p[4], list) else []
-    minimo = sum(1 for tiene_default in lista_defaults if not tiene_default)
+    minimo = sum(1 for tiene_default in lista_defaults if not tiene_default) # solo cuenta los argumentos obligatorios
     maximo = len(lista_defaults)
     analizador_semantico.registrar_funcion(p[2], minimo, maximo, p.lineno(2))
 
@@ -347,16 +348,15 @@ def p_definicion_funcion_default(p):
 def p_parametros_def(p):
     '''parametros_def : parametro_def
                       | parametros_def COMA parametro_def'''
-    if len(p) == 2:
-        p[0] = [p[1]]
+    if len(p) == 2:  #si la función solo tiene un parametro obligatorio
+        p[0] = [p[1]]  
     else:
         p[0] = p[1] + [p[3]]
 
 def p_parametro_def(p):
     '''parametro_def : VARIABLE
                      | VARIABLE ASIGNACION expresion'''
-    p[0] = (len(p) == 4)
-
+    p[0] = (len(p) == 4) # true para  parametro opcionales y false para parametros obligatorio
 # --- FIN APORTE DIEGO PARRALES --- #
 
 
@@ -394,7 +394,6 @@ def p_miembros_clase(p):
     '''
     miembros_clase : miembro_clase
                     | miembros_clase miembro_clase
-                    | empty
     '''
     pass
 
@@ -421,16 +420,8 @@ def p_instanciacion_objeto(p):
     pass
 
 # Acceso a atributos 
-def p_acceso_objeto(p):
-    '''
-    acceso_objeto : VARIABLE OBJETO_OP ID
-    '''
-    pass
-
 def p_expresion_objeto(p):
-    '''
-    expresion : acceso_objeto
-    '''
+    '''expresion : VARIABLE OBJETO_OP ID'''
     pass
 
 # clousers
